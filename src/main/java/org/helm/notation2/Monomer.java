@@ -33,8 +33,6 @@ import org.helm.chemtoolkit.IAtomBase;
 import org.helm.notation2.exception.ChemistryException;
 import org.helm.notation2.tools.BuilderMolecule;
 
-import chemaxon.marvin.plugin.PluginException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -286,7 +284,7 @@ public class Monomer implements Serializable {
    * @throws CTKException
    */
   public MoleculeInfo getCapMoleculeInfo(String label) throws IOException,
-      PluginException, CTKException, ChemistryException {
+      CTKException, ChemistryException {
     for (Attachment attachment : attachmentList) {
       if (attachment.getLabel().equalsIgnoreCase(label)) {
         String capSmi = attachment.getCapGroupSMILES();

@@ -51,8 +51,6 @@ import org.helm.notation2.parser.notation.polymer.RNAEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import chemaxon.struc.Molecule;
-
 /**
  * class to build molecules for the HELMNotation
  *
