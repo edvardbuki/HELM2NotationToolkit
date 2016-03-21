@@ -30,7 +30,7 @@ import org.helm.chemtoolkit.AbstractMolecule;
 import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Chemistry;
 import org.helm.notation2.RgroupStructure;
-import org.helm.notation2.calculation.MoleculeInformation;
+import org.helm.notation2.calculation.MoleculePropertyCalculator;
 import org.helm.notation2.exception.BuilderMoleculeException;
 import org.helm.notation2.exception.ChemistryException;
 import org.helm.notation2.exception.HELM2HandledException;
@@ -96,7 +96,7 @@ public class BuilderMoleculeTest {
   public void testBuildMoleculeFourChems() throws ParserException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
     String notation = "CHEM1{[MCC]}|CHEM2{[PEG2]}|CHEM3{[EG]}|CHEM4{[MCC]}$CHEM3,CHEM4,1:R1-1:R1|CHEM2,CHEM1,1:R1-1:R1|CHEM2,CHEM3,1:R2-1:R2$$$";
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(helm2notation), "C30H40N2O10");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(helm2notation), "C30H40N2O10");
     System.out.println(MDLUtils.generateMDL(helm2notation));
   }
 
@@ -104,21 +104,21 @@ public class BuilderMoleculeTest {
   public void testBuildMoleculePeptide() throws ParserException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
     String notation = "PEPTIDE1{L.P}$$$$";
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(helm2notation), "C11H20N2O3");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(helm2notation), "C11H20N2O3");
   }
 
   @Test
   public void testBuildMoleculeRNA() throws ParserException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
     String notation = "RNA1{R(A)P}$$$$";
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(helm2notation), "C10H14N5O7P");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(helm2notation), "C10H14N5O7P");
   }
 
   @Test
   public void testBuildMoleculeRNAExtended() throws ParserException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
     String notation = "RNA1{R(A)P.R(G)}$$$$";
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(helm2notation), "C20H25N10O11P");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(helm2notation), "C20H25N10O11P");
   }
 
   @Test(expectedExceptions = HELM2HandledException.class)
@@ -126,7 +126,7 @@ public class BuilderMoleculeTest {
       HELM2HandledException, NotationException, ChemistryException {
 
     PolymerNotation node = new PolymerNotation("CHEM1");
-    MonomerNotationUnit mon = new MonomerNotationUnit("[CZ]",
+    MonomerNotationUnit mon = new MonomerNotationUnit("[L]",
         node.getPolymerID().getType());
     node.getPolymerElements().getListOfElements().add(mon);
     BuilderMolecule.buildMoleculefromSinglePolymer(new PolymerNotation(node.getPolymerID(), node.getPolymerElements(),

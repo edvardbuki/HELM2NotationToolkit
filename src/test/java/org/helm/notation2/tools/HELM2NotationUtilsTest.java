@@ -112,6 +112,7 @@ public class HELM2NotationUtilsTest {
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
     ChangeObjects.replaceSMILESWithTemporaryIds(helm2notation);
     System.out.println(helm2notation.toHELM2());
+   // Validation.validateNotationObjects(helm2notation);
   }
 
 }

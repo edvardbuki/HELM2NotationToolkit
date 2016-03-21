@@ -51,205 +51,237 @@ import org.testng.annotations.Test;
  * @author hecht
  */
 public class ExtinctionCalculatorTest {
-  StateMachineParser parser;
+	StateMachineParser parser;
 
-  @Test
-  public void testCalculationOnePeptide() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{C}|PEPTIDE2{Y.V.N.L.I}$PEPTIDE2,PEPTIDE1,5:R2-2:R3$$$V2.0");
-    Float f = (float) 1.55;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
-  }
+	@Test
+	public void testCalculationOnePeptide()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils
+				.readNotation("PEPTIDE1{C}|PEPTIDE2{Y.V.N.L.I}$PEPTIDE2,PEPTIDE1,5:R2-2:R3$$$V2.0");
+		Float f = (float) 1.55;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
+	}
 
-  @Test
-  public void testCalculationOneRNA() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$V2.0");
-    Float f = (float) 46.20;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
-  }
+	@Test
+	public void testCalculationOneRNA()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$V2.0");
+		Float f = (float) 46.20;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationRepeatingRNA() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("RNA1{P.(R(A)P.R(G)P)'2'.R([5meC])P.R(G)P.[mR](A)}$$$$V2.0");
-    Float f = (float) 80.58;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationRepeatingRNA()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils
+				.readNotation("RNA1{P.(R(A)P.R(G)P)'2'.R([5meC])P.R(G)P.[mR](A)}$$$$V2.0");
+		Float f = (float) 80.58;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationRepeatingMonomer() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{C'2'}$$$$V2.0");
-    Float f = (float) 0.12;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationRepeatingMonomer()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{C'2'}$$$$V2.0");
+		Float f = (float) 0.12;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_DOWN).floatValue(), f);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationRepeatingList() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{(F.C.F)'3'}$$$$V2.0");
-    Float f = (float) 0.19;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationRepeatingList()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{(F.C.F)'3'}$$$$V2.0");
+		Float f = (float) 0.19;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
+	}
 
-  @Test
-  public void testCalculationWithCHEMAndBlob() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("CHEM1{[MCC]}|RNA1{R(U)}|BLOB1{?}$$$$V2.0");
-    Float f = (float) 10.21;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
-  }
+	@Test
+	public void testCalculationWithCHEMAndBlob()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("CHEM1{[MCC]}|RNA1{R(U)}|BLOB1{?}$$$$V2.0");
+		Float f = (float) 10.21;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("CHEM1{[MCC]}|RNA1{(R(U)+R(A))}|BLOB1{?}$$$$V2.0");
-    Float f = (float) 10.21;
-    Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils
+				.readNotation("CHEM1{[MCC]}|RNA1{(R(U)+R(A))}|BLOB1{?}$$$$V2.0");
+		Float f = (float) 10.21;
+		Assert.assertEquals(BigDecimal.valueOf(ExtinctionCoefficient.getInstance().calculate(helm2notation))
+				.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(), f);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException2() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{?}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException2()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{?}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException3() throws ExtinctionCoefficientException, ChemistryException, ParserException, JDOMException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{A.C._}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException3()
+			throws ExtinctionCoefficientException, ChemistryException, ParserException, JDOMException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{A.C._}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException4() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{A.C.(_.K)}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException4()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{A.C.(_.K)}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException5() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{X}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException5()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{U}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException6() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{?}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException6()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("PEPTIDE1{?}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException7() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation = HELM2NotationUtils.readNotation("RNA1{R(N)P}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException7()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation("RNA1{R(N)P}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test(expectedExceptions = ExtinctionCoefficientException.class)
-  public void testCalculationWithException8() throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
-    HELM2Notation helm2notation =
-        HELM2NotationUtils.readNotation("RNA1{[[H]OC[C@H]1O[C@@H]([C@H](O)[C@@H]1OP(O)(=O)OC[C@H]1O[C@@H]([C@H](O)[C@@H]1OP(O)(=O)OC[C@H]1O[C@@H]([C@H](O)[C@@H]1O[H])N1C=CC(=O)NC1=O)N1C=CC(=O)NC1=O)N1C=CC(=O)NC1=O]}$$$$V2.0");
-    ExtinctionCoefficient.getInstance().calculate(helm2notation);
-  }
+	@Test(expectedExceptions = ExtinctionCoefficientException.class)
+	public void testCalculationWithException8()
+			throws ParserException, JDOMException, ExtinctionCoefficientException, ChemistryException {
+		HELM2Notation helm2notation = HELM2NotationUtils.readNotation(
+				"RNA1{[[H]OC[C@H]1O[C@@H]([C@H](O)[C@@H]1OP(O)(=O)OC[C@H]1O[C@@H]([C@H](O)[C@@H]1OP(O)(=O)OC[C@H]1O[C@@H]([C@H](O)[C@@H]1O[H])N1C=CC(=O)NC1=O)N1C=CC(=O)NC1=O)N1C=CC(=O)NC1=O]}$$$$V2.0");
+		ExtinctionCoefficient.getInstance().calculate(helm2notation);
+	}
 
-  @Test
-  public void testCalculateAminoAcidSequence() throws CalculationException, org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, ExtinctionCoefficientException,
-      NotationException, ChemistryException {
+	@Test
+	public void testCalculateAminoAcidSequence()
+			throws CalculationException, org.helm.notation2.parser.exceptionparser.NotationException,
+			FastaFormatException, ExtinctionCoefficientException, NotationException, ChemistryException {
 
-    /* amino acid sequence */
-    String input = "AGGDDDDDDDDDDDDDDDDDDFFFFFFFFFFFFF";
-    Float f = (float) 0.0;
-    assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
+		/* amino acid sequence */
+		String input = "AGGDDDDDDDDDDDDDDDDDDFFFFFFFFFFFFF";
+		Float f = (float) 0.0;
+		assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
 
-    input = "AGGCFFFFFFFFFF";
-    f = (float) 62.5;
-    assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
+		input = "AGGCFFFFFFFFFF";
+		f = (float) 62.5;
+		assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
 
-    input = "AGGYEEEEEEEEEEEEEEEEEEE";
-    f = (float) 1490.0;
-    assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
+		input = "AGGYEEEEEEEEEEEEEEEEEEE";
+		f = (float) 1490.0;
+		assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
 
-    input = "AGGWEEEEEEEEEEEEEEEEEEE";
-    f = (float) 5500.0;
-    assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
-  }
+		input = "AGGWEEEEEEEEEEEEEEEEEEE";
+		f = (float) 5500.0;
+		assertEquals(getExtinctionNewImplementationPEPTIDE(input), f);
+	}
 
-  @Test
-  public void testCalculateFromPeptidePolymerNotation()
-      throws NotationException, MonomerException, CalculationException,
-      IOException, JDOMException, ExtinctionCoefficientException, ParserException, ChemistryException {
-    String notation = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}$$$$";
-    Float f = (float) 11000.0;
-    assertEquals(ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(notation), ExtinctionCoefficient.PEPTIDE_UNIT_TYPE), f);
-  }
+	@Test
+	public void testCalculateFromPeptidePolymerNotation()
+			throws NotationException, MonomerException, CalculationException, IOException, JDOMException,
+			ExtinctionCoefficientException, ParserException, ChemistryException {
+		String notation = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}$$$$";
+		Float f = (float) 11000.0;
+		assertEquals(ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(notation),
+				ExtinctionCoefficient.PEPTIDE_UNIT_TYPE), f);
+	}
 
-  private Float getExtinctionNewImplementationPEPTIDE(String sequence) throws org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, ExtinctionCoefficientException,
-      NotationException, ChemistryException {
-    float number = ExtinctionCoefficient.getInstance().calculate(SequenceConverter.readPeptide(sequence), ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
-    return number;
-  }
+	private Float getExtinctionNewImplementationPEPTIDE(String sequence)
+			throws org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException,
+			ExtinctionCoefficientException, NotationException, ChemistryException {
+		float number = ExtinctionCoefficient.getInstance().calculate(SequenceConverter.readPeptide(sequence),
+				ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
+		return number;
+	}
 
-  @Test
-  public void testCalculateFromComplexNotation() throws NotationException,
-      MonomerException, IOException, JDOMException,
-      CalculationException, ExtinctionCoefficientException, ParserException, ChemistryException {
-    String input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}$$$$";
-    float newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input), ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
-    Float f = (float) 11000.0;
-    assertEquals(newResult, f);
+	@Test
+	public void testCalculateFromComplexNotation() throws NotationException, MonomerException, IOException,
+			JDOMException, CalculationException, ExtinctionCoefficientException, ParserException, ChemistryException {
+		String input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}$$$$";
+		float newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input),
+				ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
+		Float f = (float) 11000.0;
+		assertEquals(newResult, f);
 
-    input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
-    newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
-    f = (float) 23.49;
-    assertEquals(newResult, f);
+		input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
+		newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
+		f = (float) 23.49;
+		assertEquals(newResult, f);
 
-    input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
-    newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input), ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
-    f = (float) 23490.0;
-    assertEquals(newResult, f);
+		input = "PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
+		newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input),
+				ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
+		f = (float) 23490.0;
+		assertEquals(newResult, f);
 
-    input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$";
-    newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
-    f = (float) 46.200005;
-    assertEquals(newResult, f);
+		input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$";
+		newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
+		f = (float) 46.200005;
+		assertEquals(newResult, f);
 
-    input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$";
-    newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input), ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
-    f = (float) 46200.004;
-    assertEquals(newResult, f);
+		input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}$$$$";
+		newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input),
+				ExtinctionCoefficient.PEPTIDE_UNIT_TYPE);
+		f = (float) 46200.004;
+		assertEquals(newResult, f);
 
-    input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}|CHEM1{PEG2}|PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
-    newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
+		input = "RNA1{P.R(A)P.R([5meC])P.R(G)P.[mR](A)}|CHEM1{PEG2}|PEPTIDE1{A.G.G.W.E.E.E.E.E.W}|PEPTIDE2{A.G.G.W.E.Y.E.E.E.E.W}$$$$";
+		newResult = ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(input));
 
-    f = (float) 69.69;
-    assertEquals(newResult, f);
+		f = (float) 69.69;
+		assertEquals(newResult, f);
 
-  }
+	}
 
-  @Test
-  public void testCalculateFromNucleotideSequence()
-      throws CalculationException, org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, IOException, JDOMException, ExtinctionCoefficientException, NotationException,
-      ChemistryException {
-    String input = "ACGTACGT";
-    Float f = (float) 81.119995;
-    assertEquals(getExtinctionReadRNA(input), f, 0.01);
+	@Test
+	public void testCalculateFromNucleotideSequence() throws CalculationException,
+			org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, IOException,
+			JDOMException, ExtinctionCoefficientException, NotationException, ChemistryException {
+		String input = "ACGTACGT";
+		Float f = (float) 81.119995;
+		assertEquals(getExtinctionReadRNA(input), f, 0.01);
 
-  }
+	}
 
-  @Test
-  public void testCalculateFromModifiedNucleotideSequence()
-      throws CalculationException, NotationException, IOException,
-      JDOMException, org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, ExtinctionCoefficientException, ChemistryException {
-    String input = "ACGmTACmGT";
-    Float f = (float) 81.119995;
-    assertEquals(getExtinctionReadRNA(input), f, 0.01);
-  }
+	@Test
+	public void testCalculateFromModifiedNucleotideSequence() throws CalculationException, NotationException,
+			IOException, JDOMException, org.helm.notation2.parser.exceptionparser.NotationException,
+			FastaFormatException, ExtinctionCoefficientException, ChemistryException {
+		String input = "ACGmTACmGT";
+		Float f = (float) 81.119995;
+		assertEquals(getExtinctionReadRNA(input), f, 0.01);
+	}
 
-  private Float getExtinctionReadRNA(String sequence) throws org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, IOException, JDOMException,
-      ExtinctionCoefficientException, NotationException, ChemistryException {
-    HELM2Notation containerhelm2 = SequenceConverter.readRNA(sequence);
-    float number = ExtinctionCoefficient.getInstance().calculate(containerhelm2);
-    return number;
-  }
+	private Float getExtinctionReadRNA(String sequence)
+			throws org.helm.notation2.parser.exceptionparser.NotationException, FastaFormatException, IOException,
+			JDOMException, ExtinctionCoefficientException, NotationException, ChemistryException {
+		HELM2Notation containerhelm2 = SequenceConverter.readRNA(sequence);
+		float number = ExtinctionCoefficient.getInstance().calculate(containerhelm2);
+		return number;
+	}
 
-  @Test
-  public void testCalculateFromRnaPolymerNotation() throws ExtinctionCoefficientException, ChemistryException, ParserException, JDOMException {
-    String notation = "RNA1{P.R(A)P.R(C)P.R(G)P.[mR](A)}$$$$";
-    Float f = (float) 46.200005;
-    assertEquals(ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(notation)), f);
-  }
+	@Test
+	public void testCalculateFromRnaPolymerNotation()
+			throws ExtinctionCoefficientException, ChemistryException, ParserException, JDOMException {
+		String notation = "RNA1{P.R(A)P.R(C)P.R(G)P.[mR](A)}$$$$";
+		Float f = (float) 46.200005;
+		assertEquals(ExtinctionCoefficient.getInstance().calculate(HELM2NotationUtils.readNotation(notation)), f);
+	}
 
 }

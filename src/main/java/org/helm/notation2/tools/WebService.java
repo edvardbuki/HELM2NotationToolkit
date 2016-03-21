@@ -30,12 +30,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.helm.chemtoolkit.CTKException;
-import org.helm.notation2.MoleculeInfo;
+import org.helm.notation2.MoleculeProperty;
 import org.helm.notation2.Monomer;
 import org.helm.notation2.MonomerFactory;
 import org.helm.notation2.MonomerStore;
 import org.helm.notation2.calculation.ExtinctionCoefficient;
-import org.helm.notation2.calculation.MoleculeInformation;
+import org.helm.notation2.calculation.MoleculePropertyCalculator;
 import org.helm.notation2.exception.BuilderMoleculeException;
 import org.helm.notation2.exception.ChemistryException;
 import org.helm.notation2.exception.ConnectionNotationException;
@@ -296,7 +296,7 @@ public class WebService {
    * @throws ChemistryException if the Chemistry Engine can not be initialized
    */
   public Double calculateMolecularWeight(String notation) throws MonomerLoadingException, BuilderMoleculeException, CTKException, ValidationException, ChemistryException {
-    Double result = MoleculeInformation.getMolecularWeight(validate(notation));
+    Double result = MoleculePropertyCalculator.getMolecularWeight(validate(notation));
     setMonomerFactoryToDefault(notation);
     return result;
   }
@@ -314,7 +314,7 @@ public class WebService {
    * @throws ChemistryException if the Chemistry Engine can not be initialized
    */
   public String getMolecularFormula(String notation) throws BuilderMoleculeException, CTKException, ValidationException, MonomerLoadingException, ChemistryException {
-    String result = MoleculeInformation.getMolecularFormular(validate(notation));
+    String result = MoleculePropertyCalculator.getMolecularFormular(validate(notation));
     setMonomerFactoryToDefault(notation);
     return result;
   }
@@ -335,7 +335,7 @@ public class WebService {
    */
   public List<String> getMolecularProperties(String notation) throws BuilderMoleculeException, CTKException, ExtinctionCoefficientException, ValidationException, MonomerLoadingException,
       ChemistryException {
-    MoleculeInfo result = MoleculeInformation.getMoleculeProperties(validate(notation));
+    MoleculeProperty result = MoleculePropertyCalculator.getMoleculeProperties(validate(notation));
     setMonomerFactoryToDefault(notation);
 
     return new LinkedList<String>(

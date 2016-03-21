@@ -172,3 +172,5 @@ test-output/
 
 target/
 
+
+helm2parser.log

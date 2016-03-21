@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import org.helm.chemtoolkit.AbstractMolecule;
 import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Chemistry;
-import org.helm.notation2.MoleculeInfo;
+import org.helm.notation2.MoleculeProperty;
 import org.helm.notation2.exception.BuilderMoleculeException;
 import org.helm.notation2.exception.ChemistryException;
 import org.helm.notation2.exception.ExtinctionCoefficientException;
@@ -47,14 +47,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author hecht
  */
-public final class MoleculeInformation {
+public final class MoleculePropertyCalculator {
   /** The Logger for this class */
-  private static final Logger LOG = LoggerFactory.getLogger(MoleculeInformation.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MoleculePropertyCalculator.class);
 
   /**
    * Default constructor.
    */
-  private MoleculeInformation() {
+  private MoleculePropertyCalculator() {
 
   }
 
@@ -123,10 +123,12 @@ public final class MoleculeInformation {
    * @return
    * @throws CTKException
    * @throws ChemistryException if the Chemistry Engine can not be initialized
+ * @throws BuilderMoleculeException 
    */
-  private static double calculateExactMass(List<AbstractMolecule> molecules) throws CTKException, ChemistryException {
+  private static double calculateExactMass(List<AbstractMolecule> molecules) throws CTKException, ChemistryException, BuilderMoleculeException {
     Double result = 0.0;
     for (AbstractMolecule molecule : molecules) {
+        molecule = BuilderMolecule.mergeRgroups(molecule);
       result += Chemistry.getInstance().getManipulator().getMoleculeInfo(molecule).getExactMass();
     }
     return result;
@@ -189,8 +191,8 @@ public final class MoleculeInformation {
    * @throws ExtinctionCoefficientException
    * @throws ChemistryException if the Chemistry Engine can not be initialized
    */
-  public static MoleculeInfo getMoleculeProperties(HELM2Notation helm2notation) throws BuilderMoleculeException, CTKException, ExtinctionCoefficientException, ChemistryException {
-    MoleculeInfo result = new MoleculeInfo();
+  public static MoleculeProperty getMoleculeProperties(HELM2Notation helm2notation) throws BuilderMoleculeException, CTKException, ExtinctionCoefficientException, ChemistryException {
+    MoleculeProperty result = new MoleculeProperty();
     /* First build HELM molecule */
     List<AbstractMolecule> molecules = buildMolecule(helm2notation);
     /* calculate molecular formula */

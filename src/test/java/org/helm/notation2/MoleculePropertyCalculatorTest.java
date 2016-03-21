@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.helm.chemtoolkit.CTKException;
-import org.helm.notation2.calculation.MoleculeInformation;
+import org.helm.notation2.calculation.MoleculePropertyCalculator;
 import org.helm.notation2.exception.AnalogSequenceException;
 import org.helm.notation2.exception.BuilderMoleculeException;
 import org.helm.notation2.exception.ChemistryException;
@@ -39,13 +39,14 @@ import org.helm.notation2.exception.ParserException;
 import org.helm.notation2.parser.ConverterHELM1ToHELM2;
 import org.helm.notation2.parser.ParserHELM2;
 import org.helm.notation2.parser.exceptionparser.ExceptionState;
+import org.helm.notation2.parser.notation.HELM2Notation;
 import org.helm.notation2.tools.HELM2NotationUtils;
 import org.jdom2.JDOMException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class MoleculeInformationTest {
+public class MoleculePropertyCalculatorTest {
 
   @Test
   public void testgetMolecularFormularExamples() throws ExceptionState, IOException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
@@ -68,8 +69,8 @@ public class MoleculeInformationTest {
     Double resultEditor = (double) 332.35;
     String notation = "CHEM1{[MCC]}|CHEM2{[Az]}$CHEM2,CHEM1,1:R1-1:R1$$$";
     if (Chemistry.getInstance().getChemistry().equals("org.helm.chemtoolkit.chemaxon.ChemaxonManipulator")) {
-      Assert.assertEquals(BigDecimal.valueOf(testMolecularWeight(notation)).setScale(2, BigDecimal.ROUND_HALF_UP).toString(), resultEditor.toString());
-    }
+    	Assert.assertEquals(testMolecularWeight(notation), resultEditor, 0.01);
+         }
   }
 
   @Test
@@ -95,7 +96,7 @@ public class MoleculeInformationTest {
     String helm2 = converter.doConvert(notation);
     ParserHELM2 parserHELM2 = new ParserHELM2();
     parserHELM2.parse(helm2);
-    return MoleculeInformation.getMolecularFormular(parserHELM2.getHELM2Notation());
+    return MoleculePropertyCalculator.getMolecularFormular(parserHELM2.getHELM2Notation());
   }
 
   private Double testExactMass(String notation) throws ExceptionState, IOException, JDOMException, BuilderMoleculeException, CTKException, NotationException, ChemistryException {
@@ -104,7 +105,7 @@ public class MoleculeInformationTest {
     ParserHELM2 parserHELM2 = new ParserHELM2();
     parserHELM2.parse(helm2);
 
-    return MoleculeInformation.getExactMass(parserHELM2.getHELM2Notation());
+    return MoleculePropertyCalculator.getExactMass(parserHELM2.getHELM2Notation());
 
   }
 
@@ -113,7 +114,7 @@ public class MoleculeInformationTest {
     String helm2 = converter.doConvert(notation);
     ParserHELM2 parserHELM2 = new ParserHELM2();
     parserHELM2.parse(helm2);
-    return MoleculeInformation.getMolecularWeight(parserHELM2.getHELM2Notation());
+    return MoleculePropertyCalculator.getMolecularWeight(parserHELM2.getHELM2Notation());
 
   }
 
@@ -123,12 +124,18 @@ public class MoleculeInformationTest {
 
     String newNotation =
         "RNA1{R(A)P.R(U)P.R(C)P.R(C)P.R(A)P.R(A)P.R(A)P.R(G)P.R(A)P.R(U)P.R(A)P.R(C)P.R(U)P.R(A)P.R(G)P.R(C)P.R(U)P.R(U)P.R(U)P.R(G)P.R(C)P.R(A)P.R(G)P.R(A)P.R(A)P.R(U)P.R(G)}|RNA2{R(U)P.R(U)P.R(C)P.R(U)P.R(G)P.R(C)P.R(A)P.R(A)P.R(A)P.R(G)P.R(C)P.R(U)P.R(A)P.R(G)P.R(U)P.R(A)P.R(U)P.R(C)P.R(U)P.R(U)P.R(U)P.R(G)P.R(G)P.[dR](A)P.[dR](T)}$RNA1,RNA2,2:pair-74:pair|RNA1,RNA2,5:pair-71:pair|RNA1,RNA2,8:pair-68:pair|RNA1,RNA2,11:pair-65:pair|RNA1,RNA2,14:pair-62:pair|RNA1,RNA2,17:pair-59:pair|RNA1,RNA2,20:pair-56:pair|RNA1,RNA2,23:pair-53:pair|RNA1,RNA2,26:pair-50:pair|RNA1,RNA2,29:pair-47:pair|RNA1,RNA2,32:pair-44:pair|RNA1,RNA2,35:pair-41:pair|RNA1,RNA2,38:pair-38:pair|RNA1,RNA2,41:pair-35:pair|RNA1,RNA2,44:pair-32:pair|RNA1,RNA2,47:pair-29:pair|RNA1,RNA2,50:pair-26:pair|RNA1,RNA2,53:pair-23:pair|RNA1,RNA2,56:pair-20:pair|RNA1,RNA2,59:pair-17:pair|RNA1,RNA2,62:pair-14:pair|RNA1,RNA2,65:pair-11:pair|RNA1,RNA2,68:pair-8:pair|RNA1,RNA2,71:pair-5:pair|RNA1,RNA2,74:pair-2:pair$$$V2.0";
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(HELM2NotationUtils.readNotation(newNotation)), "C495H611N191O359P50");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(HELM2NotationUtils.readNotation(newNotation)), "C495H611N191O359P50");
 
     // conjugate
     newNotation = "PEPTIDE1{A.G.G.G.C.C.K.K.K.K}|CHEM1{MCC}$PEPTIDE1,CHEM1,10:R3-1:R1$$$";
-    Assert.assertEquals(MoleculeInformation.getMolecularFormular(HELM2NotationUtils.readNotation(newNotation)), "C51H87N15O14S2");
+    Assert.assertEquals(MoleculePropertyCalculator.getMolecularFormular(HELM2NotationUtils.readNotation(newNotation)), "C51H87N15O14S2");
 
   }
+  
+  
+  
 
+ 
+
+  
 }

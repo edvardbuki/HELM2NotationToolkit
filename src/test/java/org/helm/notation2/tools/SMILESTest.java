@@ -222,5 +222,11 @@ public class SMILESTest {
     String notation = "CHEM1{[SS3]}|CHEM2{[SS3]}$CHEM1,CHEM2,1:R1-1:R1|CHEM1,CHEM2,1:R2-1:R2$$$";
     SMILES.containsGenericStructurePolymer(HELM2NotationUtils.readNotation(notation).getListOfPolymers());
   }
+  
+  @Test
+  public void testAttachmentMonomer() throws CTKSmilesException, BuilderMoleculeException, CTKException, NotationException, ChemistryException, ParserException, JDOMException{
+	  String notation = "PEPTIDE1{A.A.C.G.[dK].E.C.H.A}$PEPTIDE1,PEPTIDE1,3:R3-7:R3$$$";
+	  System.out.println(SMILES.getCanonicalSMILESForAll(HELM2NotationUtils.readNotation(notation)));
+  }
 
 }

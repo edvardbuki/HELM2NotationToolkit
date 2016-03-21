@@ -251,7 +251,7 @@ public class TestValidation {
   public void testMonomerValidationWithException() throws MonomerLoadingException, org.helm.notation2.parser.exceptionparser.NotationException, ChemistryException, ParserException, JDOMException {
 
     String test =
-        "PEPTIDE1{Z.X.G.C.(_,N).(A:10,G:30,R:30)'4'\"Group is repeated\".T.C.F.D.W\"mutation\".(A:?+G:1.5).C}|RNA1{[am6]P.(R(N)P)'4'.(R(G)P)'3-7'\"mutation\"}|CHEM1{?}|BLOB1{BEAD}\"AnimatedPolystyrene\"$PEPTIDE1,BLOB1,X:R3-?:?\"Specific Conjugation\"|PEPTIDE1,CHEM1,(A+T):R3-?:?|PEPTIDE1,PEPTIDE1,(4,8):pair-12:pair$G1(PEPTIDE1:1+RNA1:2.5-2.7+BLOB1)|G2(G1:45,CHEM1:55)${\"Name\":\"lipidnanoparticle with RNA payload and peptide ligand\"}$V2.0";
+        "PEPTIDE1{U.X.G.C.(_,N).(A:10,G:30,R:30)'4'\"Group is repeated\".T.C.F.D.W\"mutation\".(A:?+G:1.5).C}|RNA1{[am6]P.(R(N)P)'4'.(R(G)P)'3-7'\"mutation\"}|CHEM1{?}|BLOB1{BEAD}\"AnimatedPolystyrene\"$PEPTIDE1,BLOB1,X:R3-?:?\"Specific Conjugation\"|PEPTIDE1,CHEM1,(A+T):R3-?:?|PEPTIDE1,PEPTIDE1,(4,8):pair-12:pair$G1(PEPTIDE1:1+RNA1:2.5-2.7+BLOB1)|G2(G1:45,CHEM1:55)${\"Name\":\"lipidnanoparticle with RNA payload and peptide ligand\"}$V2.0";
 
     Assert.assertFalse(Validation.validateMonomers(MethodsMonomerUtils.getListOfMonomerNotation(HELM2NotationUtils.readNotation(test).getListOfPolymers())));
 
@@ -261,7 +261,8 @@ public class TestValidation {
   public void testMonomerValidationWithException2() throws MonomerLoadingException, org.helm.notation2.parser.exceptionparser.NotationException, ChemistryException, ParserException, JDOMException {
 
     String test =
-        "PEPTIDE1{A.X.G.C.(_,N).(A:10,Z:30,R:30)'4'\"Group is repeated\".T.C.F.D.W\"mutation\".(A:?+G:1.5).C}|RNA1{[am6]P.(R(N)P)'4'.(R(G)P)'3-7'\"mutation\"}|CHEM1{?}|BLOB1{BEAD}\"AnimatedPolystyrene\"$PEPTIDE1,BLOB1,X:R3-?:?\"Specific Conjugation\"|PEPTIDE1,CHEM1,(A+T):R3-?:?|PEPTIDE1,PEPTIDE1,(4,8):pair-12:pair$G1(PEPTIDE1:1+RNA1:2.5-2.7+BLOB1)|G2(G1:45,CHEM1:55)${\"Name\":\"lipidnanoparticle with RNA payload and peptide ligand\"}$V2.0";
+        "PEPTIDE1{A.X.G.C.(_,N).(A:10,U:30,R:30)'4'\"Group is repeated\".T.C.F.D.W\"mutation\".(A:?+G:1.5).C}|RNA1{[am6]P.(R(N)P)'4'.(R(G)P)'3-7'\"mutation\"}|CHEM1{?}|BLOB1{BEAD}\"AnimatedPolystyrene\"$PEPTIDE1,BLOB1,X:R3-?:?\"Specific Conjugation\"|PEPTIDE1,CHEM1,(A+T):R3-?:?|PEPTIDE1,PEPTIDE1,(4,8):pair-12:pair$G1(PEPTIDE1:1+RNA1:2.5-2.7+BLOB1)|G2(G1:45,CHEM1:55)${\"Name\":\"lipidnanoparticle with RNA payload and peptide ligand\"}$V2.0";
+    
 
     Assert.assertFalse(Validation.validateMonomers(MethodsMonomerUtils.getListOfMonomerNotation(HELM2NotationUtils.readNotation(test).getListOfPolymers())));
 

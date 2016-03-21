@@ -11,7 +11,7 @@ package org.helm.notation2;
  *
  * @author hecht
  */
-public class MoleculeInfo {
+public class MoleculeProperty {
   private double molecularWeight;
 
   private String molecularFormula;

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Monomer;
 import org.helm.notation2.Nucleotide;
 import org.helm.notation2.NucleotideFactory;

@@ -25,6 +25,7 @@ package org.helm.notation2.tools;
 
 import java.util.List;
 
+import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Monomer;
 import org.helm.notation2.exception.ChemistryException;
 import org.helm.notation2.exception.HELM2HandledException;
@@ -55,6 +56,7 @@ public final class PeptideUtils {
    * @throws HELM2HandledException if the polymer contains HELM2 features
    * @throws PeptideUtilsException if the polymer is not a peptide
    * @throws ChemistryException if the Chemistry Engine is not initialized
+ * @throws CTKException 
    */
   public static String getNaturalAnalogueSequence(PolymerNotation polymer) throws HELM2HandledException, PeptideUtilsException, ChemistryException {
     checkPeptidePolymer(polymer);
@@ -70,7 +72,7 @@ public final class PeptideUtils {
    * @throws PeptideUtilsException is not a peptide
    * @throws ChemistryException if the Chemistry Engine is not initialized
    */
-  public static String getSequence(PolymerNotation polymer) throws HELM2HandledException, PeptideUtilsException, ChemistryException {
+  public static String getSequence(PolymerNotation polymer) throws HELM2HandledException, PeptideUtilsException, ChemistryException{
     checkPeptidePolymer(polymer);
     StringBuilder sb = new StringBuilder();
     List<Monomer> monomers = MethodsMonomerUtils.getListOfHandledMonomers(polymer.getListMonomers());

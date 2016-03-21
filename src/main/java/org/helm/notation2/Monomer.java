@@ -283,13 +283,13 @@ public class Monomer implements Serializable {
    * @throws ChemistryException
    * @throws CTKException
    */
-  public MoleculeInfo getCapMoleculeInfo(String label) throws IOException,
-      CTKException, ChemistryException {
+  public MoleculeProperty getCapMoleculeInfo(String label) throws IOException,
+         CTKException, ChemistryException {
     for (Attachment attachment : attachmentList) {
       if (attachment.getLabel().equalsIgnoreCase(label)) {
         String capSmi = attachment.getCapGroupSMILES();
         org.helm.chemtoolkit.MoleculeInfo info = Chemistry.getInstance().getManipulator().getMoleculeInfo(Chemistry.getInstance().getManipulator().getMolecule(capSmi, null));
-        MoleculeInfo moleculeinfo = new MoleculeInfo();
+        MoleculeProperty moleculeinfo = new MoleculeProperty();
         moleculeinfo.setExactMass(info.getExactMass());
         moleculeinfo.setMolecularFormula(info.getMolecularFormula());
         moleculeinfo.setMolecularWeight(info.getMolecularWeight());

@@ -78,7 +78,7 @@ public final class MethodsMonomerUtils {
    * @throws NotationException
    */
   public static List<Monomer> getListOfHandledMonomers(List<MonomerNotation> monomerNotations)
-      throws HELM2HandledException, ChemistryException {
+      throws HELM2HandledException, ChemistryException{
     List<Monomer> items = new ArrayList<Monomer>();
     for (int i = 0; i < monomerNotations.size(); i++) {
       MonomerNotation monomerNotation = monomerNotations.get(i);
@@ -96,7 +96,7 @@ public final class MethodsMonomerUtils {
           // for (int j = 0; j < count; j++) {
           items.addAll(Validation.getAllMonomers(monomerNotation, i));
           // }
-        } catch (NumberFormatException | JDOMException | MonomerException | IOException | NotationException e) {
+        } catch (NumberFormatException | JDOMException | MonomerException | IOException | NotationException | CTKException e) {
           e.printStackTrace();
           throw new HELM2HandledException("Functions can't be called for HELM2 objects");
         }
@@ -117,7 +117,7 @@ public final class MethodsMonomerUtils {
    * @throws ChemistryException if the Chemistry Engine can not be initialized
    */
   public static List<Monomer> getListOfHandledMonomersOnlyBase(List<MonomerNotation> monomerNotations)
-      throws HELM2HandledException, NotationException, ChemistryException {
+      throws HELM2HandledException, NotationException, ChemistryException{
     LOG.debug("Get all bases of the rna");
     List<Monomer> items = new ArrayList<Monomer>();
 
@@ -135,7 +135,7 @@ public final class MethodsMonomerUtils {
           // for (int j = 0; j < count; j++) {
           items.addAll(Validation.getAllMonomersOnlyBase(monomerNotation));
           // }
-        } catch (NumberFormatException | JDOMException | MonomerException | IOException e) {
+        } catch (NumberFormatException | JDOMException | MonomerException | IOException | CTKException e) {
           e.printStackTrace();
           throw new HELM2HandledException("Functions can't be called for HELM2 objects");
         }
@@ -192,9 +192,9 @@ public final class MethodsMonomerUtils {
    * @return Monomer
    * @throws MonomerException if the desired monomer is not in the database
    * @throws NotationException
-   * @throws ChemistryException if the Chemistry Engine can not be initialized
+   * @throws ChemistryException if the Chemistry Engine can not be initialized 
    */
-  public static Monomer getMonomer(String type, String id, String info) throws MonomerException, NotationException, ChemistryException {
+  public static Monomer getMonomer(String type, String id, String info) throws MonomerException, NotationException, ChemistryException{
     try {
       if (id.startsWith("[") && id.endsWith("]")) {
         id = id.substring(1, id.length() - 1);
@@ -239,6 +239,16 @@ public final class MethodsMonomerUtils {
             LOG.info("Monomer was added to the database");
           }
         }
+      }
+      try{
+      List<Attachment> idList = monomer.getAttachmentList();
+      for (Attachment att : idList) {
+			if (att.getCapGroupSMILES() == null) {
+				MonomerParser.fillAttachmentInfo(att);
+			}
+		}
+      } catch(CTKException |JDOMException ex){
+    	  throw new MonomerException("Attachments could not be filled with default attachments");
       }
       return monomer;
     } catch (IOException e) {

@@ -97,7 +97,7 @@ public final class Validation {
    */
   public static void validateNotationObjects(HELM2Notation helm2notation) throws PolymerIDsException,
       MonomerException, GroupingNotationException, ConnectionNotationException, NotationException, ChemistryException, MonomerLoadingException,
-      org.helm.notation2.parser.exceptionparser.NotationException {
+      org.helm.notation2.parser.exceptionparser.NotationException{
     LOG.info("Validation process is starting");
     /* all polymer ids have to be unique */
     if (!validateUniquePolymerIDs(helm2notation)) {
@@ -229,7 +229,7 @@ public final class Validation {
 
       return true;
     } catch (PolymerIDsException | AttachmentException | HELM2HandledException | MonomerException | IOException
-        | JDOMException | org.helm.notation2.parser.exceptionparser.NotationException e) {
+        | JDOMException | org.helm.notation2.parser.exceptionparser.NotationException | CTKException e) {
       e.printStackTrace();
       LOG.info(e.getMessage());
       return false;
@@ -467,9 +467,10 @@ public final class Validation {
    * @throws JDOMException
    * @throws NotationException
    * @throws ChemistryException if the Chemistry Engine can not be initialized
+ * @throws CTKException 
    */
   public static List<Monomer> getAllMonomers(MonomerNotation not, int position) throws HELM2HandledException, MonomerException,
-      IOException, JDOMException, NotationException, ChemistryException {
+      IOException, JDOMException, NotationException, ChemistryException, CTKException {
     List<Monomer> monomers = new ArrayList<Monomer>();
 
     MonomerFactory monomerFactory = MonomerFactory.getInstance();
@@ -522,9 +523,10 @@ public final class Validation {
    * @throws JDOMException
    * @throws NotationException
    * @throws ChemistryException if the Chemistry Engine can not be initialized
+ * @throws CTKException 
    */
   public static List<Monomer> getAllMonomersOnlyBase(MonomerNotation not) throws HELM2HandledException, MonomerException,
-      IOException, JDOMException, NotationException, ChemistryException {
+      IOException, JDOMException, NotationException, ChemistryException, CTKException {
     LOG.debug("Get base for " + not);
     List<Monomer> monomers = new ArrayList<Monomer>();
 

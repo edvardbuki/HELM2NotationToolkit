@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Monomer;
 import org.helm.notation2.Nucleotide;
 import org.helm.notation2.NucleotideFactory;
@@ -358,7 +359,7 @@ public class RNAUtils {
    * @throws org.helm.notation2.exception.NotationException
    * @throws ChemistryException if the Chemistry Engine can not be initialized
    */
-  public static PolymerNotation getReverseComplement(PolymerNotation polymer) throws RNAUtilsException, IOException, JDOMException, org.helm.notation2.exception.NotationException, ChemistryException {
+  public static PolymerNotation getReverseComplement(PolymerNotation polymer) throws RNAUtilsException, IOException, JDOMException, org.helm.notation2.exception.NotationException, ChemistryException{
     checkRNA(polymer);
     PolymerNotation complementReversePolymer;
     try {

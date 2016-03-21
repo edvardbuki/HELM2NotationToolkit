@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.helm.chemtoolkit.CTKException;
 import org.helm.notation2.Monomer;
 import org.helm.notation2.exception.CalculationException;
 import org.helm.notation2.exception.ChemistryException;
