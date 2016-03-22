@@ -126,7 +126,7 @@ public class BuilderMoleculeTest {
       HELM2HandledException, NotationException, ChemistryException {
 
     PolymerNotation node = new PolymerNotation("CHEM1");
-    MonomerNotationUnit mon = new MonomerNotationUnit("[L]",
+    MonomerNotationUnit mon = new MonomerNotationUnit("[Lx]",
         node.getPolymerID().getType());
     node.getPolymerElements().getListOfElements().add(mon);
     BuilderMolecule.buildMoleculefromSinglePolymer(new PolymerNotation(node.getPolymerID(), node.getPolymerElements(),
