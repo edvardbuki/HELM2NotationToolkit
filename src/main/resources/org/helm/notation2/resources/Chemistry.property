@@ -1,1 +1,1 @@
-chemistry=org.helm.chemtoolkit.chemaxon.ChemaxonManipulator
+chemistry=org.helm.chemtoolkit.cdk.CDKManipulator
