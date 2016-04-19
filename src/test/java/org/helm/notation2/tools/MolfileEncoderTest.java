@@ -40,7 +40,6 @@ public class MolfileEncoderTest {
         "H4sIAAAAAAAAAKWUu27DMAxFd30FgXatQFJPzk2RKUmRoXvHLh069PsryonlWB4SlaBh60o64EOyATh8/vx+fQNgJilPCMg7mM0YIKcOuPBmIgIfjIimDF6cjZiC6mwxJa9faMsswivcIra9Urx1TKJ7ycYYcJzCl73Z4yClZpSmvZ5HM2KbxdElFif5HxS81sUPUyjl1iMeo5D10bdY4iaF76K0uiwpx/tjQZu8tIwGO10pbqIIMi0op0co6ALNdVmel/PTYz2K86mjEQrV+lOvxlVjTB27Xi2S7wlFCv3aULnrtUVKvZqvKq1U2VpL2KlFIupiUHUjY6l/r1v1AHDev08F0gugb2096czbcWfMczHzB/nXwLMeBQAA";
 
     String molfile = MolfileEncoder.decode(gzippedBase64);
-    System.out.println(molfile);
     String base64 = MolfileEncoder.encode(molfile);
     Assert.assertEquals(molfile, MolfileEncoder.decode(base64));
 

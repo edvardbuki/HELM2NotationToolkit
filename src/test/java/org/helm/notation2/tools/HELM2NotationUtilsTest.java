@@ -108,11 +108,10 @@ public class HELM2NotationUtilsTest {
     System.out.println(MonomerFactory.getInstance().getMonomerStore().getMonomer("RNA", "NM#1"));
 
     String notation =
-        "PEPTIDE1{([C[C@H](N[*])C([*])=O |$;;;_R1;;_R2;$|]+G:?).G.G.G.C.C.K.K.K.K}|CHEM1{MCC}|RNA1{R(C)P.R([C[N]1=CN=C(N)C2=C1N([*])C=N2 |$;;;;;;;;;_R1;;$,c:6,11,t:1,3|])[sP].RP.R(G)P.[LR]([5meC])P}$PEPTIDE1,CHEM1,10:R3-1:R1$$$";
+        "PEPTIDE1{([C[C@H](N[*])C([*])=O |$;;;_R1;;_R2;$|]+G:?).G.G.G.C.C.K.K.K.K}|CHEM1{MCC}|RNA1{R(C)P.R([Nc1ncnc2n([*])cnc12 |$;;;;;;;_R1;;;$|])[sP].RP.R(G)P.[LR]([5meC])P}$PEPTIDE1,CHEM1,10:R3-1:R1$$$";
     HELM2Notation helm2notation = HELM2NotationUtils.readNotation(notation);
     ChangeObjects.replaceSMILESWithTemporaryIds(helm2notation);
-    System.out.println(helm2notation.toHELM2());
-   // Validation.validateNotationObjects(helm2notation);
+
   }
 
 }

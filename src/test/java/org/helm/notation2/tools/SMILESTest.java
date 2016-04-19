@@ -59,7 +59,7 @@ public class SMILESTest {
   }
 
   public PolymerNotation getInlineSmilesModAdenine() throws ParserException, JDOMException {
-    String notation = "RNA1{R(C)P.R([C[N]1=CN=C(N)C2=C1N([*])C=N2 |$;;;;;;;;;_R1;;$,c:6,11,t:1,3|])[sP].RP.R(G)P.[LR]([5meC])P}$$$$";
+    String notation = "RNA1{R(C)P.R([Nc1ncnc2n([*])cnc12 |$;;;;;;;_R1;;;$|])[sP].RP.R(G)P.[LR]([5meC])P}$$$$";
     return HELM2NotationUtils.readNotation(notation).getListOfPolymers().get(0);
   }
 

@@ -23,9 +23,11 @@ package org.helm.notation2.tools;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.helm.notation2.exception.EncoderException;
@@ -57,16 +59,32 @@ public class MolfileEncoder {
   }
 
   /**
-   * method to compress the given molfile in a Base64 string
+   * method to compress the given molfile in a gezipped Base64 string
    *
    * @param str given molfile
+ * @throws EncoderException 
    */
-  private static String compress(String str) {
-    return Base64.encodeToString(str.getBytes(), false);
+  private static String compress(String str) throws EncoderException {
+	ByteArrayOutputStream rstBao = null;
+	GZIPOutputStream zos = null;
+    try {
+    	rstBao = new ByteArrayOutputStream();
+    	zos = new GZIPOutputStream(rstBao);
+    	zos.write(str.getBytes());
+    	IOUtils.closeQuietly(zos);
+	    
+    	byte[] bytes = rstBao.toByteArray();
+    	return Base64.encodeToString(bytes,false);
+    } catch(Exception e){
+    	throw new EncoderException("Molfile could not be compressed. " + str);
+   } finally{
+	   IOUtils.closeQuietly(zos);
+   }
+	  
   }
 
   /**
-   * method to decompress the given´molfile input
+   * method to decompress the given molfile input
    *
    * @param str the molefile input can be in base64 format or in the gzipped
    *          Base64 format
@@ -89,21 +107,16 @@ public class MolfileEncoder {
       }
 
       String molfile = sb.toString();
-      if (molfile.endsWith("\n$$$$\n")) {
-        molfile = molfile.replace("\n$$$$\n", "");
-      }
       reader.close();
       in.close();
       zi.close();
       return molfile;
 
     } catch (IOException e) {
-      LOG.info("Molfile was not in gzipped");
-      result = new String(bytes);
+      throw new EncoderException("Molfile could not be decompressed. " + str);
     } finally {
       IOUtils.closeQuietly(zi);
     }
-    return result;
 
   }
 }

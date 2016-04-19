@@ -100,7 +100,7 @@ public final class Chemistry {
    * method to set the chemistry-plugin to the default one (MARVIN)
    */
   private void resetConfigToDefault() {
-    chemistry = "org.helm.chemtoolkit.chemaxon.ChemaxonManipulator";
+    chemistry = "org.helm.chemtoolkit.cdk.CDKManipulator";
   }
 
   /**
