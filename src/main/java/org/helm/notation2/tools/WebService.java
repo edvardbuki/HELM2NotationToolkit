@@ -178,6 +178,13 @@ public class WebService {
     validate(helm);
     setMonomerFactoryToDefault(helm);
   }
+  
+  public void validateSyntaxHELM(String helm) throws ChemistryException, ParserException, JDOMException, IOException, MonomerException{
+	      /* Read */ 
+	  HELM2Notation helm2notation = readNotation(helm);
+	    setMonomerFactoryToDefault(helm);
+	    
+  }
 
   /**
    * method to convert the input HELM into canonical HELM
